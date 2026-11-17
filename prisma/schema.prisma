@@ -1,0 +1,92 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  RECEPCION
+  CONDUCTOR
+  ADMIN
+}
+
+enum Status {
+  FUERA_DE_SERVICIO
+  EN_MANTENIMIENTO
+  DISPONIBLE
+}
+
+model User {
+  id       Int       @id @default(autoincrement())
+  name     String
+  lastName String?
+  celular  Int
+  password String
+  rol      Role
+  vehicles Vehicle[]
+
+  @@map("users")
+}
+
+model Passenger {
+  id       Int       @id @default(autoincrement())
+  name     String
+  lastName String?
+  age      Int
+  diu      String
+  reservas Booking[]
+
+  @@map("passengers")
+}
+
+model Route {
+  id          Int     @id @default(autoincrement())
+  origin      String
+  destination String
+  viajes      Trip[]
+
+  @@map("routes")
+}
+
+model Vehicle {
+  id          Int     @id @default(autoincrement())
+  plate       String
+  model       String
+  capacity    Int
+  status      Status
+  idConductor Int
+  conductor   User    @relation(fields: [idConductor], references: [id])
+  viajes      Trip[]
+
+  @@map("vehicles")
+}
+
+model Trip {
+  id         Int       @id @default(autoincrement())
+  fechaHora  DateTime
+  idVehiculo Int
+  idRoute    Int
+  vehiculo   Vehicle   @relation(fields: [idVehiculo], references: [id])
+  Ruta       Route     @relation(fields: [idRoute], references: [id])
+  reservas   Booking[]
+   @@map("trips")
+}
+
+model Booking {
+  id               Int       @id @default(autoincrement())
+  pago             Boolean
+  cantidadAsientos Int
+  idViaje          Int
+  idPasajero       Int
+  viaje            Trip     @relation(fields: [idViaje], references: [id])
+  pasajero         Passenger @relation(fields: [idPasajero], references: [id])
+   @@map("bookings")
+}
