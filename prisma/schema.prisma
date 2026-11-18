@@ -32,7 +32,6 @@ model User {
   password String
   rol      Role
   vehicles Vehicle[]
-
   @@map("users")
 }
 
@@ -43,7 +42,6 @@ model Passenger {
   age      Int
   diu      String
   reservas Booking[]
-
   @@map("passengers")
 }
 
@@ -52,20 +50,18 @@ model Route {
   origin      String
   destination String
   viajes      Trip[]
-
   @@map("routes")
 }
 
 model Vehicle {
   id          Int     @id @default(autoincrement())
-  plate       String
+  plate       String @unique
   model       String
   capacity    Int
   status      Status
   idConductor Int
   conductor   User    @relation(fields: [idConductor], references: [id])
   viajes      Trip[]
-
   @@map("vehicles")
 }
 
@@ -77,7 +73,7 @@ model Trip {
   vehiculo   Vehicle   @relation(fields: [idVehiculo], references: [id])
   Ruta       Route     @relation(fields: [idRoute], references: [id])
   reservas   Booking[]
-   @@map("trips")
+  @@map("trips")
 }
 
 model Booking {

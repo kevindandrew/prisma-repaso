@@ -3,6 +3,9 @@ import type { Application, Response, Request } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import userRouter from "./routes/userRoute";
+import rutaRouter from "./routes/rutaRoute";
+import passengerRouter from "./routes/passengerRoute";
+import vehiculoRouter from "./routes/vehiculoRoute";
 dotenv.config();
 
 const app: Application = express();
@@ -18,6 +21,9 @@ app.get("/", function (req: Request, res: Response) {
 });
 
 app.use("/users", userRouter);
+app.use("/route", rutaRouter);
+app.use("/passenger", passengerRouter);
+app.use("/vehiculo", vehiculoRouter);
 
 app.listen(PORT, function () {
   console.log(`SERVIDOR CORRIENDO EN EL PUERTO http://localhost:${PORT}`);
