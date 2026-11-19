@@ -70,6 +70,9 @@ model Trip {
   fechaHora  DateTime
   idVehiculo Int
   idRoute    Int
+  duracion   Int
+  asientosDis Int
+  asientosVen Int
   vehiculo   Vehicle   @relation(fields: [idVehiculo], references: [id])
   Ruta       Route     @relation(fields: [idRoute], references: [id])
   reservas   Booking[]

@@ -6,6 +6,7 @@ import userRouter from "./routes/userRoute";
 import rutaRouter from "./routes/rutaRoute";
 import passengerRouter from "./routes/passengerRoute";
 import vehiculoRouter from "./routes/vehiculoRoute";
+import tripRouter from "./routes/tripRoute";
 dotenv.config();
 
 const app: Application = express();
@@ -24,6 +25,7 @@ app.use("/users", userRouter);
 app.use("/route", rutaRouter);
 app.use("/passenger", passengerRouter);
 app.use("/vehiculo", vehiculoRouter);
+app.use("/trip", tripRouter);
 
 app.listen(PORT, function () {
   console.log(`SERVIDOR CORRIENDO EN EL PUERTO http://localhost:${PORT}`);
