@@ -11,7 +11,7 @@ export async function getPassengers(req: Request, res: Response) {
     console.error(error);
     res.status(500).json({
       error: "error al obtener los pasajeros",
-      details: error.mesagge,
+      details: error.message,
     });
   }
 }
@@ -34,7 +34,7 @@ export async function getPassengersById(req: Request, res: Response) {
     console.error(error);
     res.status(500).json({
       error: "error al obtener el pasajero",
-      details: error.mesagge,
+      details: error.message,
     });
   }
 }
@@ -57,7 +57,7 @@ export async function createPassengers(req: Request, res: Response) {
     console.error(error);
     res.status(500).json({
       error: "error al crear el pasajero",
-      details: error.mesagge,
+      details: error.message,
     });
   }
 }
@@ -65,6 +65,14 @@ export async function putPassenger(req: Request, res: Response) {
   const idBuscado = Number(req.params.id);
   const { name, lastName, age, diu } = req.body;
   try {
+    const passenger = await prisma.passenger.findUnique({
+      where: { id: idBuscado },
+    });
+    if (!passenger) {
+      return res
+        .status(404)
+        .json({ message: "el pasajero con este id no existe :C" });
+    }
     const updatePassenger = await prisma.passenger.update({
       where: { id: idBuscado },
       data: {
@@ -74,11 +82,6 @@ export async function putPassenger(req: Request, res: Response) {
         diu,
       },
     });
-    if (!updatePassenger) {
-      return res
-        .status(404)
-        .json({ message: "el pasajero con este id no existe :C" });
-    }
     res.status(200).json({
       message: "pasajero actualizado con exito",
       data: updatePassenger,
@@ -87,7 +90,7 @@ export async function putPassenger(req: Request, res: Response) {
     console.error(error);
     res.status(500).json({
       error: "error al actualizar el pasajero",
-      details: error.mesagge,
+      details: error.message,
     });
   }
 }
@@ -95,23 +98,33 @@ export async function putPassenger(req: Request, res: Response) {
 export async function deletePassenger(req: Request, res: Response) {
   const idBuscado = Number(req.params.id);
   try {
-    const passengerDelete = await prisma.passenger.delete({
+    const passenger = await prisma.passenger.findUnique({
       where: { id: idBuscado },
+      include: { reservas: true },
     });
-    if (!passengerDelete) {
+    if (!passenger) {
       return res
         .status(404)
         .json({ message: "el pasajero con este id no existe :C" });
     }
+    if (passenger.reservas.length > 0) {
+      return res.status(400).json({
+        message:
+          "no podemos eliminar un pasajero q tiene reservas, elimina primero sus reservas",
+      });
+    }
+    const passengerDelete = await prisma.passenger.delete({
+      where: { id: idBuscado },
+    });
     res.status(200).json({
-      message: "pasasjero eliminado con exito",
+      message: "pasajero eliminado con exito",
       data: passengerDelete,
     });
   } catch (error: any) {
     console.error(error);
     res.status(500).json({
       error: "error al eliminar el pasajero",
-      details: error.mesagge,
+      details: error.message,
     });
   }
 }

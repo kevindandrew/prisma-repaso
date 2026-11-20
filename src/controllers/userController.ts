@@ -18,7 +18,7 @@ export async function getUsers(req: Request, res: Response) {
     console.error(error);
     res.status(500).json({
       error: "error al obtener los usuarios",
-      details: error.mesagge,
+      details: error.message,
     });
   }
 }
@@ -49,7 +49,7 @@ export async function getUserById(req: Request, res: Response) {
     console.error(error);
     res.status(500).json({
       error: "error al obtener los usuarios",
-      details: error.mesagge,
+      details: error.message,
     });
   }
 }
@@ -74,7 +74,7 @@ export async function createUser(req: Request, res: Response) {
     console.error(error);
     res.status(500).json({
       error: "error al obtener los usuarios",
-      details: error.mesagge,
+      details: error.message,
     });
   }
 }
@@ -83,6 +83,12 @@ export async function putUser(req: Request, res: Response) {
   const idBuscado = Number(req.params.id);
   const { name, lastName, celular, password, rol } = req.body;
   try {
+    const user = await prisma.user.findUnique({ where: { id: idBuscado } });
+    if (!user) {
+      return res
+        .status(404)
+        .json({ message: "el usuario con este id no existe :C" });
+    }
     const updateUser = await prisma.user.update({
       where: { id: idBuscado },
       data: {
@@ -100,19 +106,14 @@ export async function putUser(req: Request, res: Response) {
         celular: true,
       },
     });
-    if (!updateUser) {
-      return res
-        .status(404)
-        .json({ message: "el usuario con este id no existe :C" });
-    }
     res
       .status(200)
       .json({ message: "usuario actualizado con exito", data: updateUser });
   } catch (error: any) {
     console.error(error);
     res.status(500).json({
-      error: "error al obtener los usuarios",
-      details: error.mesagge,
+      error: "error al actualizar el usuario",
+      details: error.message,
     });
   }
 }
@@ -120,14 +121,31 @@ export async function putUser(req: Request, res: Response) {
 export async function deleteUser(req: Request, res: Response) {
   const idBuscado = Number(req.params.id);
   try {
-    const userDelete = await prisma.user.delete({
+    const user = await prisma.user.findUnique({
       where: { id: idBuscado },
+      include: { vehicles: true },
     });
-    if (!userDelete) {
+    if (!user) {
       return res
         .status(404)
         .json({ message: "el usuario con este id no existe :C" });
     }
+    if (user.vehicles.length > 0) {
+      return res.status(400).json({
+        message:
+          "no podemos eliminar un usuario q tiene vehiculos asignados, reasigna primero sus vehiculos",
+      });
+    }
+    const userDelete = await prisma.user.delete({
+      where: { id: idBuscado },
+      select: {
+        id: true,
+        name: true,
+        lastName: true,
+        rol: true,
+        celular: true,
+      },
+    });
     res.status(200).json({
       message: "usuario eliminado con exito",
       data: userDelete,
@@ -135,8 +153,8 @@ export async function deleteUser(req: Request, res: Response) {
   } catch (error: any) {
     console.error(error);
     res.status(500).json({
-      error: "error al obtener los usuarios",
-      details: error.mesagge,
+      error: "error al eliminar el usuario",
+      details: error.message,
     });
   }
 }

@@ -1,0 +1,1232 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "API Funvalesco",
+    "description": "Documentacion de la API de viajes, reservas, pasajeros y mas",
+    "version": "1.0.0"
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Users",
+      "description": "Usuarios del sistema"
+    },
+    {
+      "name": "Rutas",
+      "description": "Rutas de origen y destino"
+    },
+    {
+      "name": "Pasajeros",
+      "description": "Pasajeros registrados"
+    },
+    {
+      "name": "Vehiculos",
+      "description": "Vehiculos de la flota"
+    },
+    {
+      "name": "Viajes",
+      "description": "Viajes programados"
+    },
+    {
+      "name": "Reservas",
+      "description": "Reservas de asientos"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "Verificar q la API esta funcionando",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "La API responde correctamente"
+          }
+        }
+      }
+    },
+    "/users/": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Listar todos los usuarios",
+        "description": "Devuelve todos los usuarios ordenados por id (sin la contraseña).",
+        "responses": {
+          "200": {
+            "description": "Lista de usuarios"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Crear un usuario",
+        "description": "El rol puede ser RECEPCION, CONDUCTOR o ADMIN.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/User"
+            },
+            "description": "datos a enviar"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Usuario creado con exito"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Obtener un usuario por id",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "id del registro"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuario encontrado"
+          },
+          "404": {
+            "description": "El usuario con este id no existe"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Actualizar un usuario",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "id del registro"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/User"
+            },
+            "description": "datos a enviar"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuario actualizado con exito"
+          },
+          "404": {
+            "description": "El usuario con este id no existe"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Eliminar un usuario",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "id del registro"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuario eliminado con exito"
+          },
+          "400": {
+            "description": "El usuario tiene vehiculos asignados"
+          },
+          "404": {
+            "description": "El usuario con este id no existe"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      }
+    },
+    "/route/": {
+      "get": {
+        "tags": [
+          "Rutas"
+        ],
+        "summary": "Listar todas las rutas",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Lista de rutas"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Rutas"
+        ],
+        "summary": "Crear una ruta",
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Ruta"
+            },
+            "description": "datos a enviar"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Ruta creada con exito"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      }
+    },
+    "/route/{id}": {
+      "get": {
+        "tags": [
+          "Rutas"
+        ],
+        "summary": "Obtener una ruta por id",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "id del registro"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ruta encontrada"
+          },
+          "404": {
+            "description": "La ruta con este id no existe"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Rutas"
+        ],
+        "summary": "Actualizar una ruta",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "id del registro"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Ruta"
+            },
+            "description": "datos a enviar"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ruta actualizada con exito"
+          },
+          "404": {
+            "description": "La ruta con este id no existe"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Rutas"
+        ],
+        "summary": "Eliminar una ruta",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "id del registro"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ruta eliminada con exito"
+          },
+          "400": {
+            "description": "La ruta tiene viajes"
+          },
+          "404": {
+            "description": "La ruta con este id no existe"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      }
+    },
+    "/passenger/": {
+      "get": {
+        "tags": [
+          "Pasajeros"
+        ],
+        "summary": "Listar todos los pasajeros",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Lista de pasajeros"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Pasajeros"
+        ],
+        "summary": "Registrar un pasajero",
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Pasajero"
+            },
+            "description": "datos a enviar"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Pasajero creado con exito"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      }
+    },
+    "/passenger/{id}": {
+      "get": {
+        "tags": [
+          "Pasajeros"
+        ],
+        "summary": "Obtener un pasajero por id",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "id del registro"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pasajero encontrado"
+          },
+          "404": {
+            "description": "El pasajero con este id no existe"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Pasajeros"
+        ],
+        "summary": "Actualizar un pasajero",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "id del registro"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Pasajero"
+            },
+            "description": "datos a enviar"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pasajero actualizado con exito"
+          },
+          "404": {
+            "description": "El pasajero con este id no existe"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Pasajeros"
+        ],
+        "summary": "Eliminar un pasajero",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "id del registro"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pasajero eliminado con exito"
+          },
+          "400": {
+            "description": "El pasajero tiene reservas"
+          },
+          "404": {
+            "description": "El pasajero con este id no existe"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      }
+    },
+    "/vehiculo/": {
+      "get": {
+        "tags": [
+          "Vehiculos"
+        ],
+        "summary": "Listar todos los vehiculos",
+        "description": "Incluye los datos del conductor asignado.",
+        "responses": {
+          "200": {
+            "description": "Lista de vehiculos"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Vehiculos"
+        ],
+        "summary": "Registrar un vehiculo",
+        "description": "El conductor debe existir y tener rol CONDUCTOR. La placa no se puede repetir. El status puede ser DISPONIBLE, EN_MANTENIMIENTO o FUERA_DE_SERVICIO.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Vehiculo"
+            },
+            "description": "datos a enviar"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Vehiculo creado con exito"
+          },
+          "400": {
+            "description": "El conductor no existe / no es CONDUCTOR, o la placa ya esta registrada"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      }
+    },
+    "/vehiculo/{id}": {
+      "get": {
+        "tags": [
+          "Vehiculos"
+        ],
+        "summary": "Obtener un vehiculo por id",
+        "description": "Incluye los datos del conductor asignado.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "id del registro"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Vehiculo encontrado"
+          },
+          "404": {
+            "description": "El vehiculo con este id no existe"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Vehiculos"
+        ],
+        "summary": "Actualizar un vehiculo",
+        "description": "Solo se puede cambiar el modelo, la capacidad y el status (la placa y el conductor no).",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "id del registro"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/VehiculoUpdate"
+            },
+            "description": "datos a enviar"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Vehiculo actualizado con exito"
+          },
+          "404": {
+            "description": "El vehiculo con este id no existe"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Vehiculos"
+        ],
+        "summary": "Cambiar el conductor de un vehiculo",
+        "description": "El nuevo conductor debe existir y tener rol CONDUCTOR. Un vehiculo FUERA_DE_SERVICIO no se puede reasignar.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "id del registro"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/CambioConductor"
+            },
+            "description": "datos a enviar"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Vehiculo reasignado con exito"
+          },
+          "400": {
+            "description": "El conductor no existe / no es CONDUCTOR, o el vehiculo esta fuera de servicio"
+          },
+          "404": {
+            "description": "El vehiculo con este id no existe"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Vehiculos"
+        ],
+        "summary": "Eliminar un vehiculo",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "id del registro"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Vehiculo eliminado con exito"
+          },
+          "400": {
+            "description": "El vehiculo tiene viajes"
+          },
+          "404": {
+            "description": "El vehiculo con este id no existe"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      }
+    },
+    "/trip/": {
+      "get": {
+        "tags": [
+          "Viajes"
+        ],
+        "summary": "Listar todos los viajes",
+        "description": "Incluye la ruta y el vehiculo de cada viaje.",
+        "responses": {
+          "200": {
+            "description": "Lista de viajes"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Viajes"
+        ],
+        "summary": "Crear un viaje",
+        "description": "El vehiculo debe estar DISPONIBLE. Los asientos disponibles se calculan solos: capacidad del vehiculo - 1 (el conductor), y si la duracion es de 8 horas o mas se quitan 2 asientos mas. Los asientos vendidos empiezan en 0.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Viaje"
+            },
+            "description": "datos a enviar"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Viaje creado con exito"
+          },
+          "400": {
+            "description": "El vehiculo no existe o no esta DISPONIBLE"
+          },
+          "404": {
+            "description": "La ruta no existe"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      }
+    },
+    "/trip/{id}": {
+      "get": {
+        "tags": [
+          "Viajes"
+        ],
+        "summary": "Obtener un viaje por id",
+        "description": "Incluye la ruta, el vehiculo y las reservas del viaje.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "id del registro"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Viaje encontrado"
+          },
+          "404": {
+            "description": "El viaje con este id no existe"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Viajes"
+        ],
+        "summary": "Actualizar un viaje",
+        "description": "Solo se puede actualizar si el viaje todavia no tiene asientos vendidos.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "id del registro"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Viaje"
+            },
+            "description": "datos a enviar"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Viaje actualizado con exito"
+          },
+          "400": {
+            "description": "El viaje ya tiene boletos vendidos"
+          },
+          "404": {
+            "description": "El viaje no existe"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Viajes"
+        ],
+        "summary": "Eliminar un viaje",
+        "description": "No se puede eliminar un viaje q tiene reservas, primero hay q eliminar sus reservas.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "id del registro"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Viaje eliminado con exito"
+          },
+          "400": {
+            "description": "El viaje tiene reservas"
+          },
+          "404": {
+            "description": "El viaje con este id no existe"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      }
+    },
+    "/trip/{id}/vehiculo": {
+      "patch": {
+        "tags": [
+          "Viajes"
+        ],
+        "summary": "Cambiar el vehiculo de un viaje",
+        "description": "El nuevo vehiculo debe estar DISPONIBLE y tener igual o mas capacidad q el anterior. Los asientos disponibles aumentan segun la diferencia de capacidad.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "id del registro"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/CambioVehiculo"
+            },
+            "description": "datos a enviar"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Vehiculo del viaje actualizado con exito"
+          },
+          "400": {
+            "description": "El vehiculo no existe, no esta disponible o tiene menos capacidad"
+          },
+          "404": {
+            "description": "El viaje no existe"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      }
+    },
+    "/trip/{id}/fecha": {
+      "patch": {
+        "tags": [
+          "Viajes"
+        ],
+        "summary": "Cambiar la fecha y hora de un viaje",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "id del registro"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/CambioFecha"
+            },
+            "description": "datos a enviar"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Fecha y hora actualizada con exito"
+          },
+          "404": {
+            "description": "El viaje no existe"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      }
+    },
+    "/booking/": {
+      "get": {
+        "tags": [
+          "Reservas"
+        ],
+        "summary": "Listar todas las reservas",
+        "description": "Incluye el viaje y el pasajero de cada reserva.",
+        "responses": {
+          "200": {
+            "description": "Lista de reservas"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Reservas"
+        ],
+        "summary": "Crear una reserva",
+        "description": "El viaje y el pasajero deben existir y el viaje debe tener suficientes asientos disponibles. Al crearla se restan los asientos disponibles del viaje y se suman a los vendidos.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Reserva"
+            },
+            "description": "datos a enviar"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Reserva creada con exito"
+          },
+          "400": {
+            "description": "La cantidad de asientos no es valida o no hay suficientes asientos"
+          },
+          "404": {
+            "description": "El viaje o el pasajero no existe"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      }
+    },
+    "/booking/{id}": {
+      "get": {
+        "tags": [
+          "Reservas"
+        ],
+        "summary": "Obtener una reserva por id",
+        "description": "Incluye el viaje y el pasajero de la reserva.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "id del registro"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Reserva encontrada"
+          },
+          "404": {
+            "description": "La reserva con este id no existe"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Reservas"
+        ],
+        "summary": "Actualizar una reserva",
+        "description": "Se puede cambiar el pago y la cantidad de asientos. Los asientos del viaje se ajustan segun la diferencia con la cantidad anterior.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "id del registro"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/ReservaUpdate"
+            },
+            "description": "datos a enviar"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Reserva actualizada con exito"
+          },
+          "400": {
+            "description": "La cantidad de asientos no es valida o no hay suficientes asientos"
+          },
+          "404": {
+            "description": "La reserva no existe"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Reservas"
+        ],
+        "summary": "Eliminar una reserva",
+        "description": "Los asientos de la reserva se devuelven al viaje.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "id del registro"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Reserva eliminada con exito"
+          },
+          "404": {
+            "description": "La reserva con este id no existe"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      }
+    },
+    "/booking/{id}/pago": {
+      "patch": {
+        "tags": [
+          "Reservas"
+        ],
+        "summary": "Marcar si la reserva esta pagada",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "id del registro"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Pago"
+            },
+            "description": "datos a enviar"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pago actualizado con exito"
+          },
+          "404": {
+            "description": "La reserva no existe"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Juan"
+        },
+        "lastName": {
+          "type": "string",
+          "example": "Perez"
+        },
+        "celular": {
+          "type": "number",
+          "example": 77712345
+        },
+        "password": {
+          "type": "string",
+          "example": "123456"
+        },
+        "rol": {
+          "type": "string",
+          "example": "ADMIN"
+        }
+      }
+    },
+    "Ruta": {
+      "type": "object",
+      "properties": {
+        "origin": {
+          "type": "string",
+          "example": "La Paz"
+        },
+        "destination": {
+          "type": "string",
+          "example": "Cochabamba"
+        }
+      }
+    },
+    "Pasajero": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Maria"
+        },
+        "lastName": {
+          "type": "string",
+          "example": "Lopez"
+        },
+        "age": {
+          "type": "number",
+          "example": 25
+        },
+        "diu": {
+          "type": "string",
+          "example": "1234567"
+        }
+      }
+    },
+    "Vehiculo": {
+      "type": "object",
+      "properties": {
+        "plate": {
+          "type": "string",
+          "example": "1234ABC"
+        },
+        "model": {
+          "type": "string",
+          "example": "Toyota Hiace"
+        },
+        "capacity": {
+          "type": "number",
+          "example": 15
+        },
+        "status": {
+          "type": "string",
+          "example": "DISPONIBLE"
+        },
+        "idConductor": {
+          "type": "number",
+          "example": 1
+        }
+      }
+    },
+    "VehiculoUpdate": {
+      "type": "object",
+      "properties": {
+        "model": {
+          "type": "string",
+          "example": "Toyota Hiace"
+        },
+        "capacity": {
+          "type": "number",
+          "example": 15
+        },
+        "status": {
+          "type": "string",
+          "example": "EN_MANTENIMIENTO"
+        }
+      }
+    },
+    "CambioConductor": {
+      "type": "object",
+      "properties": {
+        "idConductor": {
+          "type": "number",
+          "example": 2
+        }
+      }
+    },
+    "Viaje": {
+      "type": "object",
+      "properties": {
+        "fechaHora": {
+          "type": "string",
+          "example": "2026-12-01T08:00:00.000Z"
+        },
+        "idVehiculo": {
+          "type": "number",
+          "example": 1
+        },
+        "idRoute": {
+          "type": "number",
+          "example": 1
+        },
+        "duracion": {
+          "type": "number",
+          "example": 6
+        }
+      }
+    },
+    "CambioVehiculo": {
+      "type": "object",
+      "properties": {
+        "idVehiculo": {
+          "type": "number",
+          "example": 2
+        }
+      }
+    },
+    "CambioFecha": {
+      "type": "object",
+      "properties": {
+        "fechaHora": {
+          "type": "string",
+          "example": "2026-12-02T10:00:00.000Z"
+        }
+      }
+    },
+    "Reserva": {
+      "type": "object",
+      "properties": {
+        "pago": {
+          "type": "boolean",
+          "example": true
+        },
+        "cantidadAsientos": {
+          "type": "number",
+          "example": 2
+        },
+        "idViaje": {
+          "type": "number",
+          "example": 1
+        },
+        "idPasajero": {
+          "type": "number",
+          "example": 1
+        }
+      }
+    },
+    "ReservaUpdate": {
+      "type": "object",
+      "properties": {
+        "pago": {
+          "type": "boolean",
+          "example": true
+        },
+        "cantidadAsientos": {
+          "type": "number",
+          "example": 3
+        }
+      }
+    },
+    "Pago": {
+      "type": "object",
+      "properties": {
+        "pago": {
+          "type": "boolean",
+          "example": true
+        }
+      }
+    }
+  }
+}
