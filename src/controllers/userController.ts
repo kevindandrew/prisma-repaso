@@ -10,7 +10,8 @@ export async function getUsers(req: Request, res: Response) {
         name: true,
         lastName: true,
         rol: true,
-        celular: true,
+        email: true,
+        password: true,
       },
     });
     res.status(200).json({ data: users });
@@ -54,7 +55,7 @@ export async function getUserById(req: Request, res: Response) {
   }
 }
 
-export async function createUser(req: Request, res: Response) {
+/* export async function createUser(req: Request, res: Response) {
   const { name, lastName, celular, password, rol } = req.body;
   try {
     const newUser = await prisma.user.create({
@@ -77,11 +78,11 @@ export async function createUser(req: Request, res: Response) {
       details: error.message,
     });
   }
-}
+} */
 
 export async function putUser(req: Request, res: Response) {
   const idBuscado = Number(req.params.id);
-  const { name, lastName, celular, password, rol } = req.body;
+  const { name, lastName, celular, password, rol, email } = req.body;
   try {
     const user = await prisma.user.findUnique({ where: { id: idBuscado } });
     if (!user) {
@@ -97,6 +98,7 @@ export async function putUser(req: Request, res: Response) {
         celular,
         password,
         rol,
+        email,
       },
       select: {
         id: true,

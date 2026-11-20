@@ -6,11 +6,13 @@ import {
   getPassengersById,
   putPassenger,
 } from "../controllers/passengerController";
+import { validate } from "../middlewares/validateMiddleware";
+import { createPassengerSchema } from "../schemas/passengerSchema";
 const router = Router();
 
 router.get("/", getPassengers);
 router.get("/:id", getPassengersById);
-router.post("/", createPassengers);
+router.post("/", validate(createPassengerSchema), createPassengers);
 router.put("/:id", putPassenger);
 router.delete("/:id", deletePassenger);
 export default router;

@@ -19,7 +19,6 @@ export async function getBookings(req: Request, res: Response) {
     });
   }
 }
-
 export async function getBookingById(req: Request, res: Response) {
   const idBuscado = Number(req.params.id);
   try {
@@ -47,7 +46,6 @@ export async function getBookingById(req: Request, res: Response) {
     });
   }
 }
-
 export async function createBooking(req: Request, res: Response) {
   const { pago, cantidadAsientos, idViaje, idPasajero } = req.body;
   try {
@@ -96,7 +94,6 @@ export async function createBooking(req: Request, res: Response) {
     });
   }
 }
-
 export async function putBooking(req: Request, res: Response) {
   const idBuscado = Number(req.params.id);
   const { pago, cantidadAsientos } = req.body;
@@ -146,7 +143,6 @@ export async function putBooking(req: Request, res: Response) {
     });
   }
 }
-
 export async function patchPago(req: Request, res: Response) {
   const idBuscado = Number(req.params.id);
   const { pago } = req.body;
@@ -173,7 +169,6 @@ export async function patchPago(req: Request, res: Response) {
     });
   }
 }
-
 export async function deleteBooking(req: Request, res: Response) {
   const idBuscado = Number(req.params.id);
   try {
@@ -208,3 +203,6 @@ export async function deleteBooking(req: Request, res: Response) {
     });
   }
 }
+//MIGRACION DE 2 VEHICULOS A UNO SOLO
+//AGREGAR ESTADO DE VEHICULO Y DE VIAJE
+//

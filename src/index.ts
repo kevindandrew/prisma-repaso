@@ -8,6 +8,7 @@ import passengerRouter from "./routes/passengerRoute";
 import vehiculoRouter from "./routes/vehiculoRoute";
 import tripRouter from "./routes/tripRoute";
 import bookingRouter from "./routes/bookingRoute";
+import authRouter from "./routes/auth.routes";
 import swaggerUi from "swagger-ui-express";
 import fs from "node:fs";
 dotenv.config();
@@ -30,7 +31,7 @@ app.get("/", function (req: Request, res: Response) {
 });
 
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
+app.use("/auth", authRouter);
 app.use("/users", userRouter);
 app.use("/route", rutaRouter);
 app.use("/passenger", passengerRouter);
